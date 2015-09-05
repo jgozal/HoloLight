@@ -31,10 +31,9 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement); 
 		
-		//create views
-		var views = [
+var views = [
 			{ 
-				left: 0,
+				left: 0.25,
 				bottom: 0.5,
 				width: 0.5,
 				height: 0.5,
@@ -54,8 +53,8 @@
 				eye: [ 0, 300, 1800 ],
 				up: [ 0, 1, 0 ],
 				fov: 30,
-				angle: 90,
-				rotation: 101.25
+				angle: 120,
+				rotation: 33.75
 			},
 			{ 
 				left: 0.5,
@@ -66,20 +65,8 @@
 				eye: [ 0, 300, 1800 ],
 				up: [ 0, 1, 0 ],
 				fov: 30,
-				angle: 180,
-				rotation: -101.25
-			},
-			{ 
-				left: 0.5,
-				bottom: 0.5,
-				width: 0.5,
-				height: 0.5,
-				background: { r: 0.0, g: 0.0, b: 0.0, a: 1 },
-				eye: [ 0, 300, 1800 ],
-				up: [ 0, 1, 0 ],
-				fov: 30,
-				angle: 270,
-				rotation: 101.25
+				angle: 240,
+				rotation: -33.75
 			}
 		];
 		
