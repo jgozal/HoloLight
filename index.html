@@ -1,16 +1,27 @@
 <html>
   <head>
-  	<!-- Using ER NEC Monitor - Resolution is 1280x1024 -->
-    <title>4 Cameras</title>
+    <title>4 Cameras - With Leap Motion Controls</title>
     <style>
-		body{margin: 0px; padding: 0px; background-color: black;}
-		canvas {width: 100%; height: 100%; background-color: black;}
+      body{margin: 0px; padding: 0px; background-color: black;}
+      canvas {width: 100%; height: 100%; background-color: black;}
 		p{position: absolute; color: red; z-index: 999; left: 50%; top: 50%; margin-top: -9px; margin-left:-4px;}
     </style>
     <script src="three.js"></script>
+    <script src="leap.js"></script>
   </head>
   <body>
     <script>
+		function map(value, inputMin, inputMax, outputMin, outputMax){
+			outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);  
+			if(outVal >  outputMax){
+			  outVal = outputMax;
+			}
+			if(outVal <  outputMin){
+			  outVal = outputMin;
+			} 
+			return outVal;
+		}
+		
 	    var windowWidth  = window.innerWidth * window.devicePixelRatio;
 	    var windowHeight  = window.innerHeight * window.devicePixelRatio;
 	    
@@ -168,8 +179,8 @@
 		//window resize method
 		window.addEventListener( 'resize', onWindowResize, false );
 		function onWindowResize(){
-	        windowWidth  = window.innerWidth * window.devicePixelRatio;
-	        windowHeight  = window.innerHeight * window.devicePixelRatio;
+	    var windowWidth  = window.innerWidth * window.devicePixelRatio;
+	    var windowHeight  = window.innerHeight * window.devicePixelRatio;
 	        
 	        for (var i =  0; i < views.length; i++ ) {
 				var view = views[i]
@@ -183,57 +194,60 @@
 		}
 		
       
-		function render(){
+		//render scene
+		render();
 		
-			//rotate cloud and earth independently
-			clouds.rotation.y+=.002
-			earth.rotation.y+=.001
-			particleSystem.rotation.y+=.003
-			
-			//for each view
-			for (var i =  0; i < views.length; i++ ) {
-				//grab each view
-				var view = views[i]
-		
-				//grab each camera
-				var camera = view.camera;
+		//request animation frame and connect to leap socket
+		Leap.loop(function(frame) {
+			if (frame.valid) {
+				if (!firstValidFrame) firstValidFrame = frame
+				var t = firstValidFrame.translation(frame)
+
 				
-				//Adjust camera within 3D spherical coordinates
+				clouds.rotation.x = map(t[1], -300, 300, 0, 10)
+				clouds.rotation.y = map(t[0], -300, 300, 0, 10)
+				earth.rotation.x = map(t[1], -300, 300, 0, 10)
+				earth.rotation.y = map(t[0], -300, 300, 0, 10)
+				particleSystem.rotation.x = map(t[1], -300, 300, 0, 10)
+				particleSystem.rotation.y = map(t[0], -300, 300, 0, 10)
+
+			}
+
+
+		});
+		
+		
+		function render(){      
+			//animation loop
+			requestAnimationFrame( render );
+			
+			//render
+			for (var i =  0; i < views.length; i++ ) {
+				var view = views[i]
+				var camera = view.camera;
+
+				//adjust 3D spherical coordinates of the camera
 				camera.position.x = earth.position.x + cameraRadius * Math.sin(rotateY * Math.PI/180) * Math.cos(view.angle * Math.PI/180)
 				camera.position.z = earth.position.y + cameraRadius * Math.sin(rotateY * Math.PI/180) * Math.sin(view.angle * Math.PI/180)
 				camera.position.y = earth.position.z + cameraRadius * Math.cos(rotateY * Math.PI/180)
 				camera.lookAt(scene.position)
-		
-				//Set rotation of camera on Z-Axis
-				camera.rotation.z= view.rotation - Math.PI;
+				camera.rotation.z= view.rotation  - Math.PI;
 				
-				//Grab view ports
+				//viewports
 				var left   = Math.floor( windowWidth  * view.left );
 				var bottom = Math.floor( windowHeight * view.bottom );
 				var width  = Math.floor( windowWidth  * view.width );
 				var height = Math.floor( windowHeight * view.height );
-		
-				//Render
 				renderer.setViewport( left, bottom, width, height );
 				renderer.setScissor( left, bottom, width, height );
 				renderer.enableScissorTest ( true );
 				renderer.setClearColor( view.background, view.background.a );
 				
-				renderer.render(scene, camera)
+				
+				renderer.render(scene, camera);
 			}
 		}
-		
-		
-		function animate(){
-			render();
-			
-			requestAnimationFrame( animate );
-		}
-		
-      
-      	//start animation loop
-		animate();
     </script>
-    <p>+</p>
+    <!--<p>+</p>-->
   </body>
 </html>
