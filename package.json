@@ -4,7 +4,7 @@
   "description": "Interactive Holographic Light - Built with Three.js and Leap Motion at PennApps",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node deploy.js"
   },
   "dependencies": {
     "express": "~4.9.x"
