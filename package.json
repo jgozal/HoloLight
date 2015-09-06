@@ -2,7 +2,7 @@
   "name": "hololight",
   "version": "0.1.2",
   "description": "Interactive Holographic Light - Built with Three.js and Leap Motion at PennApps",
-  "main": "index.js",
+  "main": "deploy.js",
   "scripts": {
     "start": "node deploy.js"
   },

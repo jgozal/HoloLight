@@ -5,7 +5,7 @@ var app = express();
 
 process.env.PWD = process.cwd();
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname + '/media'));
+app.use(express.static(process.env.PWD + '/media'));
 
 app.get('/', function(request, response) {
   response.sendfile('index.html');
