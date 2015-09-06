@@ -5,7 +5,7 @@ var app = express();
 
 process.env.PWD = process.cwd();
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(path.join(process.env.PWD, 'public')));
+app.use(express.static(process.env.PWD + '/public'));
 
 app.get('/', function(request, response) {
   response.sendfile('index.html');
