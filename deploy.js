@@ -4,6 +4,7 @@ var app = express();
 
 
 process.env.PWD = process.cwd();
+console.log(process.cwd())
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(process.env.PWD + '/media'));
 
