@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 
 
-app.use(express.static(process.env.PWD + '/public'));
+app.use(express.static(process.env.PWD + '/media'));
 process.env.PWD = process.cwd();
 app.set('port', (process.env.PORT || 5000));
 
