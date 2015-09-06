@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
+  "name": "hololight",
   "version": "0.1.2",
-  "description": "A sample Node.js app using Express 4",
+  "description": "Interactive Holographic Light - Built with Three.js and Leap Motion at PennApps",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
