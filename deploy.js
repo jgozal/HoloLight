@@ -2,10 +2,10 @@ var express = require('express');
 var app = express();
 
 
-
+app.use(express.static(process.env.PWD + '/public'));
 process.env.PWD = process.cwd();
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(process.env.PWD + '/public'));
+
 
 app.get('/', function(request, response) {
   response.sendfile('index.html');
